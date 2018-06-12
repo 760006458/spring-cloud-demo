@@ -1,0 +1,27 @@
+server:
+  port: 8099
+  context-path: /zuul
+
+eureka:
+  client:
+    service-url:
+#      defaultZone: http://127.0.0.1:1111/eureka/,http://127.0.0.1:1112/eureka/ #注册中心集群时使用
+      defaultZone: http://127.0.0.1:8761/eureka/
+
+spring:
+  application:
+    name: zuul
+  redis:
+    host: 192.168.218.132
+
+zuul:
+  routes:
+    myProducer:   #自定义浏览器访问路径，将服务名producer-service映射为myProducer，当然原服务名仍可使用
+      path: /myProducer/**    #http://localhost:8099/zuul/producer-service/producer/hello可以
+      serviceId: producer-service #http://localhost:8099/zuul/myProducer/producer/hello可以
+  #注意：yml中Set集合参数多个以逗号隔开，配置routes的ignored-patterns时，不要带context-path！可以使用*或**或?通配符简化
+#  ignored-patterns: /myProducer/producer/hello,/producer-service/producer/hello
+  sensitiveHeaders:   #设置全局敏感头信息，也可以针对某些服务进行配置
+management:
+  security:
+    enabled: false

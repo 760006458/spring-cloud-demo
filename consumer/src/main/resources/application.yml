@@ -1,0 +1,26 @@
+server:
+  port: 8888
+  context-path: /consumer
+spring:
+  application:
+    name: consumer-service
+  cloud:
+    stream:
+      bindings:
+        myinput:
+          group: order
+          destination: myDestination
+        myoutput:
+          destination: myDestination
+          content-type: application/json
+        myInput2:
+          group: order2
+          destination: myDestination2
+        myoutput2:
+          destination: myDestination2
+          content-type: application/json
+eureka:
+  client:
+    service-url:
+#      defaultZone: http://127.0.0.1:1111/eureka/,http://127.0.0.1:1112/eureka/ #注册中心集群时使用
+      defaultZone: http://127.0.0.1:8761/eureka/

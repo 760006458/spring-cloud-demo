@@ -1,0 +1,28 @@
+server:
+  port: 8080
+  context-path: /producer
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka/
+
+spring:
+  application:
+    name: producer-service
+  cloud:
+    config:
+      label: master
+      discovery:
+        enabled: true   #开启通过服务名来访问config
+        service-id: config
+      profile: dev
+    stream:
+      bindings:
+        input:
+          group: order  #分组使用，该项目是order组，那么对于input来说，如果同时多个订阅对象，那该组只有一个进行消费
+          destination: myDestination  #不能省略，否则input和output无法建立连接
+        output:
+          destination: myDestination  #不能省略，否则input和output无法建立连接
+          content-type: application/json  #便于浏览器查看发送的对象内容，否则默认base64编码看不懂
+

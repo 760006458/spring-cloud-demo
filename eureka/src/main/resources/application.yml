@@ -1,0 +1,22 @@
+#这是单机版配置，peer1和peer2是集群版配置
+server:
+  port: 8761
+
+eureka:
+  instance:
+    hostname: 127.0.0.1
+  client:
+    register-with-eureka: false #注册中心会把自己当成客户端来尝试注册自己，单机版最好改为false（自己就是注册中心，自己没必要把自己当成实例注册自己）；
+                                 #但集群版就让他默认为true，如果改为false，则注册中心之间无法互相注册
+                                 #否则启动报异常：TransportException: Cannot execute request on any known server，但是不影响正常启动。
+                                 #因为刚启动时eureka客户端找不到注册中心，但是启动之后的心跳就重新找到注册中心，所以刷新浏览器能看到自己注册了自己
+    fetch-registry: false       #注册中心的职责就是维护服务实例，而不需要检索它们
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    #服务提供方启动后会跟注册中心保持心跳，如果15分钟内心跳失败的比例过高，注册中心会将当前注册实例保护起来防止丢失。
+    #但这样可能导致消费方拿到不存在的提供方服务
+    enable-self-preservation: false
+spring:
+  application:
+    name: eureka

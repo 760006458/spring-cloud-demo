@@ -1,0 +1,11 @@
+server:
+  port: 1112
+spring:
+  application:
+    name: producer-service
+eureka:
+  instance:
+    hostname: 127.0.0.1:1112
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:1111/eureka/

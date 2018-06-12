@@ -1,0 +1,31 @@
+server:
+  port: 80
+  context-path: /   #注意：配置中心服务端的路径一定要配置成/，否则客户端无法获取配置文件
+
+spring:
+  application:
+    name: config
+  cloud:
+    config:
+      server:
+        git:
+          username: 760006458@qq.com
+          password: XXS8365297xxs
+          uri: https://gitee.com/TianWen2/cloud-config.git  #可以写克隆的地址，也可以写浏览器地址栏的地址
+#          basedir: C:/Users/xuan/AppData/Local/Temp/config-repo/   #配置本地git仓库地址
+  rabbitmq:
+      host: localhost
+      port: 5672  #不能瞎改，RabbitMQ浏览器访问端口是：15672（前边多了个1）
+      username: guest
+      password: guest
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka/
+  instance:
+    hostname: 127.0.0.1 #浏览器上注册实例的超链接地址，默认不写是xuan:port/...
+
+management:
+  security:
+    enabled: false  #Full authentication is required to access actuator endpoints

@@ -1,0 +1,48 @@
+server:
+  port: 8900
+  context-path: /user
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka/
+
+spring:
+  application:
+    name: user
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql:///cloud_test
+    username: root
+    password: xuan
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy:  org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl   #禁用jpa的驼峰命名
+  redis:
+    host: 192.168.218.132
+
+#hystrix的yml配置
+hystrix:
+  command:
+    default:  #配置全局的@HystrixCommand接口
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    getUserList2:   #配置@HystrixCommand接口--getUserList2方法
+      circuitBreaker:
+        enabled: true
+        requestVolumeThreshold: 5
+        sleepWindowInMilliseconds: 10000
+        errorThresholdPercentage: 60
+
+#开启feign-hystrix
+feign:
+  hystrix:
+    enabled: true
+
+management:
+  context-path: /

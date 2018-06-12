@@ -1,0 +1,43 @@
+package com.example.stream;
+
+import org.springframework.cloud.stream.annotation.Input;
+import org.springframework.cloud.stream.annotation.Output;
+import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.SubscribableChannel;
+
+/**
+ * @author xuan
+ * @create 2018-06-02 19:20
+ **/
+public interface StreamClient {
+
+    String INPUT = "myInput"; //自定义没用，好奇怪，必须使用stream包自带的Sink和Source
+    String OUTPUT = "myOutput";
+
+    /**
+     * 借用了stream包中的Sink和Source类
+     * @return
+     */
+    @Input(Sink.INPUT)
+    SubscribableChannel input();
+
+    /**
+     * 发消息时使用
+     * @return
+     */
+    @Output(Source.OUTPUT)
+    MessageChannel output();
+
+    /**
+     * 用于测试：接受回复的消息，这次却能自定义input/output通道了。
+     * 怀疑：接受回复的消息时，没有在controller中@Autowired StreamClient，所以bean早就存在的异常就没报
+     * @return
+     */
+    @Input(StreamClient.INPUT)
+    SubscribableChannel input2();
+
+    @Output(StreamClient.OUTPUT)
+    MessageChannel output2();
+}
